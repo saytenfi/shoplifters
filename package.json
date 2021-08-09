@@ -1,0 +1,23 @@
+{
+  "name": "shoplifters",
+  "version": "1.0.0",
+  "description": "/*******************************************\r * JScript-330B : Final Project\r *\r * Alex Palmieri, Morgan Corbridge,\r * Julio Payano, Samuel Aytenfisu\r *\r * August 8th, 2021\r *******************************************/",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pcpower/shoplifters.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pcpower/shoplifters/issues"
+  },
+  "homepage": "https://github.com/pcpower/shoplifters#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
