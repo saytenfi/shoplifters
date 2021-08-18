@@ -3,6 +3,7 @@ const users = mongoose.model("users");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const login_Controller1 = require("../models/users");
+
 module.exports.userRegister = async (req, res, next) => {
   console.log("registered", req.body);
   let email = req.body.email;
@@ -34,6 +35,7 @@ module.exports.userRegister = async (req, res, next) => {
       lastName: lastName,
       firstName: firstName,
     });
+    
     user.save().then((res1) => {
       console.log(res1);
       res.send("Admin saved");
