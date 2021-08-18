@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-const request = require("supertest");
-var jwt = require('jsonwebtoken');
-=======
   
 const request = require("supertest");
->>>>>>> 2ad4279f1479dfdd00c80ec9a3de77890932a0a8
 
 const server = require("../server");
 const testUtils = require('../test-utils');
@@ -12,26 +7,6 @@ const testUtils = require('../test-utils');
 const User = require('../models/user');
 
 describe("/login", () => {
-<<<<<<< HEAD
-    beforeAll(testUtils.connectDB);
-    afterAll(testUtils.stopDB);
-
-    afterEach(testUtils.clearDB);
-
-    const testUser = {
-        email: "testUser0@mail.com",
-        password: "testPassword"
-    };
-
-    const adminUser = {
-        email: "adminUser@mail.com",
-        password: "adminPassword",
-        role: "admin"
-    };
-
-    
-})
-=======
   beforeAll(testUtils.connectDB);
   afterAll(testUtils.stopDB);
 
@@ -244,4 +219,3 @@ describe("/login", () => {
     });
   });
 });
->>>>>>> 2ad4279f1479dfdd00c80ec9a3de77890932a0a8
