@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 
 mongoose
   .connect(
-    "mongodb+srv://zeeshan:zeeshan@shoplifter.uiz47.mongodb.net/myFirstDatabase?authSource=admin&replicaSet=atlas-pizl99-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true",
+  "mongodb+srv://endb:endb@cluster0.hgprh.mongodb.net/myFirstDatabase?authSource=admin&replicaSet=atlas-nv1yux-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true"
     {
       useNewUrlParser: true,
       useUnifiedTopology: true,
