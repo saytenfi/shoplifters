@@ -18,9 +18,11 @@
   },
   "homepage": "https://github.com/pcpower/shoplifters#readme",
   "dependencies": {
-    "bcrypt": "^5.0.1",
     "express": "^4.17.1",
+    "bcrypt": "^5.0.1",
     "jest": "^27.0.6",
     "jsonwebtoken": "^8.5.1"
+  },
+  "devDependencies": {}
   }
 }
