@@ -1,4 +1,4 @@
-module.exports = (async (err, req, res, next) => {  
+const errorReport = (async (err, req, res, next) => {  
     console.log(err);
     if (err.message.includes("Cast to ObjectId failed")) {   
         res.status(400).send('Invalid id provided');  
@@ -31,3 +31,6 @@ module.exports = (async (err, req, res, next) => {
     }
     next(); 
   });
+
+
+  module.exports = errorReport;
