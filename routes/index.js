@@ -8,6 +8,10 @@ router.use(async (req, res, next) => {
     console.log(`${req.method} ${req.path} at ${new Date()}`);
     next();
   });
+
+router.get('/', (req, res, next) => {
+  res.render('index');
+});
   
 router.use('/register', require('./signup'));
 router.use('/login', require('./login'));
