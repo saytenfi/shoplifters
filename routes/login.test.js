@@ -4,7 +4,7 @@ const request = require("supertest");
 const server = require("../server");
 const testUtils = require('../test-utils');
 
-const User = require('../models/user');
+const User = require('../models/users');
 
 describe("/login", () => {
   beforeAll(testUtils.connectDB);

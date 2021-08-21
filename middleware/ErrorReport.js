@@ -2,7 +2,7 @@ const errorReport = (async (err, req, res, next) => {
     console.log(err);
     if (err.message.includes("Cast to ObjectId failed")) {   
         res.status(400).send('Invalid id provided');  
-    } else if (err.message.includes("Password is required") 
+    } else if (err.message.includes("is required") 
         || err.message.includes("data and salt arguments required") 
         || err.message.includes("password is not defined")) {   
             res.status(400).send('Password is required');
@@ -29,7 +29,6 @@ const errorReport = (async (err, req, res, next) => {
     } else {    
         res.status(500).send('Something broke!')  
     }
-    next(); 
   });
 
 

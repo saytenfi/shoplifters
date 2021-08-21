@@ -1,39 +1,47 @@
 const { Router } = require("express");
 const router = Router();
 
+const productsDAO = require('../daos/product');
+const userDAO = require('../daos/users');
+const ordersDAO = require('../daos/order');
+
 const errorReport = require("../middleware/ErrorReport");
+
+
 
 router.use(async (req, res, next) => {
     console.log(`${req.method} ${req.url} at ${new Date()}`);
     next();
   });
 
-router.use(isLoggedIn);
+// router.use(isLoggedIn);
 
 router.post("/", async (req, res, next) => {
     try {      
         const reqBody = req.body;
         console.log(reqBody);
         if (reqBody){
-            const itemData = await itemsDAO.getByIds(reqBody);
-            console.log(itemData)
-            if (itemData && itemData.length != 0){
+            const productData = await productsDAO.getByIds(reqBody);
+            console.log(productData)
+
+            if (productData && productData.length != 0){
                 let total = 0;
-                let items = [];
+                let products = [];
                 reqBody.forEach(idToAdd => { 
-                    itemData.find((item) => {
-                        if (item._id == idToAdd){
-                            items.push(item);
-                            total += item.price;
+                    productData.find((product) => {
+                        if (product._id == idToAdd){
+                            product.push(product);
+                            // total += product.price;
                         }
                     });
                 });
-                if (reqBody.length != items.length) {
+
+                if (reqBody.length != product.length) {
                     throw new Error('item not found')
                 }
                 const orderData = {
                     userId: req.user._id,
-                    items: items,
+                    products: products,
                     total: total
                 };
                 console.log(orderData);

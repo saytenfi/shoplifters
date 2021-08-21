@@ -1,13 +1,11 @@
-  
 const request = require("supertest");
-var jwt = require('jsonwebtoken');
 
-const server = require("../index");
+const server = require("../server");
 const testUtils = require('../test-utils');
 
-const User = require('../models/user');
+const User = require('../models/users');
 
-describe("/signup", () => {
+describe("/register", () => {
   beforeAll(testUtils.connectDB);
   afterAll(testUtils.stopDB);
 
@@ -17,60 +15,68 @@ describe("/signup", () => {
       firstName: 'Test',
       lastName: 'User',
       email: 'testUser@mail.com',
-      password: 'testUserPassword'
+      password: 'testUserPassword',
+      confirmPassword: 'testUserPassword'
   };
   const adminUser = {
       firstName: 'Admin',
       lastName: 'User',
       email: 'adminUser@mail.com',
-      password: 'adminUserPassword'
+      password: 'adminUserPassword',
+      confirmPassword: 'adminUserPassword'
   }
 
   describe("fail before signup", () => {
     describe("POST /", () => {
       it("should return 401", async () => {
-        const res = await request(server).post("/signup").send(testUser);
+        const res = await request(server).post("/login").send(testUser);
         expect(res.statusCode).toEqual(401);
       });
     });
 
     describe("POST /resetPassword", () => {
       it("should return 401", async () => {
-        const res = await request(server).post("/login/password").send(testUser);
+        const res = await request(server).post("/resetPassword").send(testUser);
         expect(res.statusCode).toEqual(401);
       });
     });
   });
   
   describe("fail signup due to missing element ", () => {
-    describe("POST /signup", () => {
+    describe("POST /register", () => {
       it("should return 400 without a password", async () => {
-        const res = await request(server).post("/signup").send({
+        const res = await request(server).post("/register").send({
             firstName: testUser.firstName,
             lastName: testUser.lastName,
-            email: testUser.email
+            email: testUser.email,
+            confirmPassword: testUser.confirmPassword
         });
         expect(res.statusCode).toEqual(400);
       });
       it("should return 400 without a firstName", async () => {
-        const res = await request(server).post("/signup").send({
+        const res = await request(server).post("/register").send({
             lastName: testUser.lastName,
-            email: testUser.email
+            email: testUser.email,
+            password: testUser.password,
+            confirmPassword: testUser.confirmPassword
         });
         expect(res.statusCode).toEqual(400);
       });
       it("should return 400 without a lastName", async () => {
-        const res = await request(server).post("/signup").send({
+        const res = await request(server).post("/register").send({
             firstName: testUser.firstName,
-            email: testUser.email
+            email: testUser.email,
+            password: testUser.password,
+            confirmPassword: testUser.confirmPassword
         });
         expect(res.statusCode).toEqual(400);
       });
       it("should return 400 without an email", async () => {
-        const res = await request(server).post("/signup").send({
+        const res = await request(server).post("/register").send({
             firstName: testUser.firstName,
             lastName: testUser.lastName,
-            password: testUser.password
+            password: testUser.password,
+            confirmPassword: testUser.confirmPassword
         });
         expect(res.statusCode).toEqual(400);
       });
@@ -78,40 +84,44 @@ describe("/signup", () => {
   });
 
   describe("fail signup due to empty element ", () => {
-    describe("POST /signup", () => {
+    describe("POST /register", () => {
       it("should return 400 with empty password", async () => {
-        const res = await request(server).post("/signup").send({
+        const res = await request(server).post("/register").send({
             firstName: testUser.firstName,
             lastName: testUser.lastName,
             email: testUser.email,
-            password: ''
+            password: '',
+            confirmPassword: testUser.confirmPassword
         });
         expect(res.statusCode).toEqual(400);
       });
       it("should return 400 with empty firstName", async () => {
-        const res = await request(server).post("/signup").send({
+        const res = await request(server).post("/register").send({
             firstName: '',
             lastName: testUser.lastName,
             email: testUser.email,
-            password: testUser.password
+            password: testUser.password,
+            confirmPassword: testUser.confirmPassword
         });
         expect(res.statusCode).toEqual(400);
       });
       it("should return 400 with empty lastName", async () => {
-        const res = await request(server).post("/signup").send({
+        const res = await request(server).post("/register").send({
             firstName: testUser.firstName,
             lastName: '',
             email: testUser.email,
-            password: testUser.password
+            password: testUser.password,
+            confirmPassword: testUser.confirmPassword
         });
         expect(res.statusCode).toEqual(400);
       });
       it("should return 400 with empty email", async () => {
-        const res = await request(server).post("/signup").send({
+        const res = await request(server).post("/register").send({
             firstName: testUser.firstName,
             lastName: testUser.lastName,
             email: '',
-            password: testUser.password
+            password: testUser.password,
+            confirmPassword: testUser.confirmPassword
         });
         expect(res.statusCode).toEqual(400);
       });
@@ -120,7 +130,7 @@ describe("/signup", () => {
 
   describe.each([testUser, adminUser])("User %#", (user) => {
     it("should return 200", async () => {
-        const res = await request(server).post("/signup").send(user);
+        const res = await request(server).post("/register").send(user);
         expect(res.statusCode).toEqual(200);
         expect(res.body).toEqual('Admin saved');
       });

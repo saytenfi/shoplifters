@@ -1,49 +1,59 @@
-const mongoose = require("mongoose");
-// const users = mongoose.model("users");
 const bcrypt = require("bcrypt");
-// const jwt = require("jsonwebtoken");
 const login_Controller1 = require("../models/users");
 
-module.exports.userRegister = async (req, res, next) => {
-  console.log("registered", req.body);
-  let email = req.body.email;
-  let firstName = req.body.firstName;
-  let lastName = req.body.lastName;
-  let password = req.body.password;
-  let confirmPassword = req.body.confirmPassword;
+module.exports = {};
 
-  let salt = await bcrypt.genSalt(10);
-  let hash = await bcrypt.hash(password, salt);
-  password = hash;
-
-  let csalt = await bcrypt.genSalt(10);
-  let chash = await bcrypt.hash(confirmPassword, csalt);
-  confirmPassword = chash;
-
-  if (!email || !password) {
-    return res.status(422).json({ error: "please add all the fields" });
+module.exports.getUserByEmail = async (userEmail) => {
+  try {
+    const existingUser = await login_Controller1.findOne({email: userEmail}).lean();
+    return existingUser;
+  } catch(e) {
+    throw e;
   }
+}
 
-  // let saveUser = await login_Controller1.findOne({email: email}).lean();
-
-  await login_Controller1.findOne({ email: email }).then((saveduser) => {
-    if (saveduser) {
-      return res
-        .status(422)
-        .json({ error: "user already exists with that email" });
+module.exports.userRegister = async (req, res, next) => {
+  try
+  {
+    console.log("registered", req.body);
+    let { email, firstName, lastName, password, confirmPassword } = req.body;
+  
+    if (!email || !password || !firstName || !lastName || !confirmPassword
+      || email.length === 0 || password.length === 0
+      || firstName.length === 0 || lastName.length === 0
+      || confirmPassword.length === 0
+    ) {
+      throw new Error(`Field is required`);
     }
 
-    let user = new login_Controller1({
-      email: email,
-      password: password,
-      confirmPassword: confirmPassword,
-      lastName: lastName,
-      firstName: firstName,
+    let salt = await bcrypt.genSalt(10);
+    let hash = await bcrypt.hash(password, salt);
+    password = hash;
+  
+    let csalt = await bcrypt.genSalt(10);
+    let chash = await bcrypt.hash(confirmPassword, csalt);
+    confirmPassword = chash;
+  
+    await login_Controller1.findOne({ email: email }).then((saveduser) => {
+      if (saveduser) {
+        next(new Error('duplicate key'));
+      }
+  
+      let user = new login_Controller1({
+        email: email,
+        password: password,
+        confirmPassword: confirmPassword,
+        lastName: lastName,
+        firstName: firstName,
+      });
+      
+      user.save().then((res1) => {
+        console.log(res1);
+        res.json("Admin saved");
+      });
     });
-    
-    user.save().then((res1) => {
-      console.log(res1);
-      res.send("Admin saved");
-    });
-  });
+  }
+  catch(e) {
+    next(e);
+  }
 };
