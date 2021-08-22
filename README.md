@@ -7,6 +7,7 @@
 * Julio Payano, Samuel Aytenfisu
 *
 * August 8th, 2021
+* > Updated August 22, 2021
 *******************************************/
 
 # Final Project
@@ -40,7 +41,6 @@ have to shop directly from the brick-and-mortar store.
 11. "Update Order" --> Update Items (PUT)
 12. "My Orders" --> Retrieve User Orders (GET)
 
-
 * Admin function only
 
 ### Timeline
@@ -51,6 +51,24 @@ Sprint 1: August 9th - August 15th
 Sprint 2: August 16th - August 22nd
 Sprint 3: August 23rd - August 29th
 
+### Update - 20210822
+Deployed to heroku app can be accessed through:
+> https://fierce-headland-03799.herokuapp.com/
+
+Signup and Login routes and front-end work as designed.
+
+Products will be loaded directly into database.
+When products page is accessed, products will be read from the DB and displayed onto the screen.
+Need, to build:
+> Product Search ... pending review & merge
+> Product Delete ... build in-progress
+> Product Create
+> Order Update
+> Product Filter
+> Order Update
+> Checkout
+> Order DELETE ... pending review & merge
+> My Orders
 
 ### Idea Backlog
 
