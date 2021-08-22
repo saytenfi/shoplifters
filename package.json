@@ -7,6 +7,9 @@
     "test": "jest --coverage --runInBand",
     "start": "nodemon -e mustache index.js"
   },
+  "engines": {
+    "node": "15.x"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/pcpower/shoplifters.git"
