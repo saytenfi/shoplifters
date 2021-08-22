@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --coverage --runInBand",
-    "start": "nodemon -e mustache index.js"
+    // "start": "nodemon -e mustache index.js"
+    "start":"node index.js"
   },
   "engines": {
     "node": "15.x"
