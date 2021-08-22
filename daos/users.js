@@ -15,6 +15,7 @@ module.exports.getUserByEmail = async (userEmail) => {
 module.exports.userRegister = async (req, res, next) => {
   try
   {
+    console.log('params', req.params);
     console.log("registered", req.body);
     let { email, firstName, lastName, password, confirmPassword } = req.body;
   
@@ -52,6 +53,8 @@ module.exports.userRegister = async (req, res, next) => {
         res.json("Admin saved");
       });
     });
+
+    next();
   }
   catch(e) {
     next(e);
