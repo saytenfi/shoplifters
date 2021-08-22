@@ -9,14 +9,18 @@ router.use(async (req, res, next) => {
     next();
   });
 
-router.get('/', (req, res, next) => {
-  res.render('index');
+router.get('/signup',(req,res,next) => {
+  res.render('signup');
 });
-  
+
 router.use('/register', require('./signup'));
 router.use('/login', require('./login'));
 // router.use(auth.isAuthenticated);
 // router.use('/password', require('./resetPassword'));
+
+router.use('/', (req, res, next) => {
+  res.render('index');
+});
 
 router.use(errorHandler);
 
