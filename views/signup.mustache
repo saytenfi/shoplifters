@@ -112,16 +112,16 @@
         <div class="container">
             <div class="card">
                 <h1 class="card_title">Login to your account</h1>
-                <p class="card_title-info">Welcome to ShopLifters</p>
-                <form action="/register" class="card_form" method="post">
+                <p class="card_title-info">Welcome ShopLifters</p>
+                <form action="/register/signup" class="card_form" method="POST">
                   <div class="input">
                     <input
-                      type="text"
-                      class="input_field"
-                      name="firstName"
-                      id="firstName"
-                      placeholder="First Name"
-                      required />
+                        name="firstName"
+                        type="text"
+                        class="input_field"
+                        id="firstName"
+                        placeholder="First Name"
+                        required />
                   </div>
                   <div class="input">
                     <input
@@ -129,6 +129,7 @@
                       class="input_field"
                       name="lastName"
                       id="lastName"
+                      placeholder="Last Name"
                       required />
                   </div>
                   <div class="input">
@@ -137,6 +138,7 @@
                       class="input_field"
                       name="email"
                       id="email"
+                      placeholder="Email"
                       required />
                   </div>
                   <div class="input">
@@ -145,6 +147,7 @@
                       class="input_field"
                       name="password"
                       id="password"
+                      placeholder="Password"
                       required />
                   </div>
                   <div class="input">
@@ -153,9 +156,10 @@
                       class="input_field"
                       name="confirmPassword"
                       id="confirmPassword"
+                      placeholder="Confirm Password"
                       required />
                   </div>
-                  <button class="card_button">Get started</button>
+                  <input type="submit" class="card_button" value="Get Started" />
                 </form>
                 <div class="card_info">
                     <p>Already registered? <a href="/">Sign In</a></p>

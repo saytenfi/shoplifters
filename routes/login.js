@@ -8,6 +8,15 @@ const secret = process.env.JWT_SECRET;
 
 const userDAO = require('../daos/users');
 
+router.use(async (req, res, next) => {
+    console.log(`Login > ${req.method} ${req.path} at ${new Date()}`);
+    next();
+});
+
+router.get('/', async (req,res,next) => {
+    res.status(200).render('index');
+});
+
 router.post('/', async (req, res, next) => {
     try {
         let { email, password } = req.body;
@@ -25,10 +34,16 @@ router.post('/', async (req, res, next) => {
             const pwdMatch = await bcrypt.compare(password, user.password);
 
             if(pwdMatch) {
-                const tokenStr = jwt.sign({_id: user._id, email: user.email},secret);
-                res.json({token: tokenStr});
+                const tokenStr = jwt.sign(
+                    {
+                        _id: user._id,
+                        email: user.email,
+                        firstName: user.firstName,
+                        lastName: user.lastName
+                    },secret);
+                res.status(200).redirect(`/home/${tokenStr}`);
             } else {
-                throw new Error('Password match failed')
+                throw new Error('Password match failed');
             }
         }
   } catch (e) {

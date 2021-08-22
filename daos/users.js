@@ -12,10 +12,18 @@ module.exports.getUserByEmail = async (userEmail) => {
   }
 }
 
+module.exports.getUserById = async (userId) => {
+  try {
+    const existingUser = await login_Controller1.findOne({ _id: userId}).lean();
+    return existingUser;
+  } catch(e) {
+    throw e;
+  }
+}
+
 module.exports.userRegister = async (req, res, next) => {
   try
   {
-    console.log('params', req.params);
     console.log("registered", req.body);
     let { email, firstName, lastName, password, confirmPassword } = req.body;
   
@@ -34,28 +42,28 @@ module.exports.userRegister = async (req, res, next) => {
     let csalt = await bcrypt.genSalt(10);
     let chash = await bcrypt.hash(confirmPassword, csalt);
     confirmPassword = chash;
-  
-    await login_Controller1.findOne({ email: email }).then((saveduser) => {
-      if (saveduser) {
-        next(new Error('duplicate key'));
-      }
-  
-      let user = new login_Controller1({
-        email: email,
-        password: password,
-        confirmPassword: confirmPassword,
-        lastName: lastName,
-        firstName: firstName,
-      });
-      
-      user.save().then((res1) => {
-        console.log(res1);
-        res.json("Admin saved");
-      });
-    });
 
-    next();
+    const user = {
+      email: email,
+      password: password,
+      confirmPassword: confirmPassword,
+      lastName: lastName,
+      firstName: firstName
+    };
+
+    const savedUser = await login_Controller1.findOne({email: email}).lean();
+    if(savedUser) {
+      next(new Error('duplicate key'));
+    } else {
+      const createdUser = await login_Controller1.create(user);
+      if(createdUser) {
+        res.status(200).redirect('/login');
+      } else {
+        throw new Error('Could not create user');
+      }
+    }
   }
+
   catch(e) {
     next(e);
   }

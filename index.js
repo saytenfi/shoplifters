@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 
 const port = process.env.PORT || 5000;
 
-console.log('> Test')
 mongoose.connect(
   'mongodb+srv://endb:endb@cluster0.hgprh.mongodb.net/myFirstDatabase?authSource=admin&replicaSet=atlas-nv1yux-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true',
   {

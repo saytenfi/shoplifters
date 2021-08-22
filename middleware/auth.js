@@ -3,7 +3,10 @@ require('dotenv').config();
 
 const isAuthenticated = async (req, res, next) => {
     try {
-        const bearer = req.headers.authorization;
+
+        const bearer = req.params.token;
+
+        // const bearer = req.headers.authorization;
 
         if(bearer) {
             const token = bearer.replace('Bearer ', '');
