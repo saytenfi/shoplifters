@@ -3,17 +3,12 @@ const router = Router();
 const productDAO = require('../daos/product');
 const errorHandler = require('../middleware/ErrorReport');
 
-
-
 //update product 
 router.put('/:id', async (req, res, next) => {
   try {
-    
-      const recordupdated = await productDAO.updateProduct(req.params.id, req.body);
-
-      if (recordupdated) {
-        res.json(recordupdated).sendStatus(200);
-        return;
+      const productUpdated = await productDAO.updateProduct(req.params.id, req.body);
+      if (productUpdated) {
+        res.json(productUpdated);
       }
     
   } catch (e) {
@@ -22,4 +17,5 @@ router.put('/:id', async (req, res, next) => {
 });
 
 router.use(errorHandler);
+
 module.exports = router;
