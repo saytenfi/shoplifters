@@ -8,6 +8,6 @@ router.use(async (req, res, next) => {
     next();
 });
 
-router.post("/", login_Controller.userRegister);
+router.post("/signup", login_Controller.userRegister);
 
 module.exports = router;

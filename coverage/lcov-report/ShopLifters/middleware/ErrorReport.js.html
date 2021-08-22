@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">25% </span>
+                <span class="strong">66.67% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>6/24</span>
+                <span class='fraction'>16/24</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">10.34% </span>
+                <span class="strong">65.52% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>3/29</span>
+                <span class='fraction'>19/29</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">25% </span>
+                <span class="strong">66.67% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>6/24</span>
+                <span class='fraction'>16/24</span>
             </div>
         
             
@@ -55,7 +55,7 @@
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line medium'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -93,33 +93,33 @@
 <a name='L34'></a><a href='#L34'>34</a>
 <a name='L35'></a><a href='#L35'>35</a>
 <a name='L36'></a><a href='#L36'>36</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">8x</span>
-<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -131,30 +131,30 @@
     console.log(err);
     <span class="missing-if-branch" title="if path not taken" >I</span>if (err.message.includes("Cast to ObjectId failed")) {   
 <span class="cstat-no" title="statement not covered" >        res.status(400).send('Invalid id provided');  </span>
-    } else <span class="missing-if-branch" title="else path not taken" >E</span>if (err.message.includes("is required") 
-        || <span class="branch-1 cbranch-no" title="branch not covered" >err.message.includes("data and salt arguments required") </span>
-        || <span class="branch-2 cbranch-no" title="branch not covered" >err.message.includes("password is not defined"))</span> {   
+    } else if (err.message.includes("is required") 
+        || err.message.includes("data and salt arguments required") 
+        || err.message.includes("password is not defined")) {   
             res.status(400).send('Password is required');
-    } else <span class="cstat-no" title="statement not covered" >if (err.message.includes("item not found")) {   </span>
+    } else <span class="missing-if-branch" title="if path not taken" >I</span>if (err.message.includes("item not found")) {   
 <span class="cstat-no" title="statement not covered" >        res.status(400).send('item not found');</span>
-    } else <span class="cstat-no" title="statement not covered" >if (err.message.includes("duplicate key")) {   </span>
+    } else <span class="missing-if-branch" title="if path not taken" >I</span>if (err.message.includes("duplicate key")) {   
 <span class="cstat-no" title="statement not covered" >        res.status(409).send('Email already in use');</span>
-    } else <span class="cstat-no" title="statement not covered" >if (err.message.includes("Not an Admin")) {   </span>
+    } else <span class="missing-if-branch" title="if path not taken" >I</span>if (err.message.includes("Not an Admin")) {   
 <span class="cstat-no" title="statement not covered" >        res.status(403).send('Access denied');</span>
-    } else <span class="cstat-no" title="statement not covered" >if (err.message.includes("Password needed for logout")) {   </span>
+    } else <span class="missing-if-branch" title="if path not taken" >I</span>if (err.message.includes("Password needed for logout")) {   
 <span class="cstat-no" title="statement not covered" >        res.status(409).send('Password not found');</span>
-    } else <span class="cstat-no" title="statement not covered" >if (err.message.includes("Invalid item ID")) {   </span>
+    } else <span class="missing-if-branch" title="if path not taken" >I</span>if (err.message.includes("Invalid item ID")) {   
 <span class="cstat-no" title="statement not covered" >        res.status(404).send('Invalid item ID');</span>
-    } else <span class="cstat-no" title="statement not covered" >if (err.message.includes("Invalid order ID")) {   </span>
+    } else <span class="missing-if-branch" title="if path not taken" >I</span>if (err.message.includes("Invalid order ID")) {   
 <span class="cstat-no" title="statement not covered" >        res.status(404).send('Invalid order ID');</span>
-    } else <span class="cstat-no" title="statement not covered" >if (err.message.includes("Password match failed") </span>
+    } else if (err.message.includes("Password match failed") 
         || err.message.includes("Cannot read property 'password' of null")) {   
-<span class="cstat-no" title="statement not covered" >            res.status(401).send("Password doesn't match");</span>
-    } else <span class="cstat-no" title="statement not covered" >if (err.message.includes("Token is Invalid") </span>
+            res.status(401).send("Password doesn't match");
+    } else <span class="missing-if-branch" title="else path not taken" >E</span>if (err.message.includes("Token is Invalid") 
         || err.message.includes("User not found") 
-        || err.message.includes("malformed") 
-        || err.message.includes("Not Authorized")) {   
-<span class="cstat-no" title="statement not covered" >            res.status(401).send("Token is Invalid");</span>
+        || <span class="branch-2 cbranch-no" title="branch not covered" >err.message.includes("malformed") </span>
+        || <span class="branch-3 cbranch-no" title="branch not covered" >err.message.includes("Not Authorized"))</span> {   
+            res.status(401).send("Token is Invalid");
     } else {    
 <span class="cstat-no" title="statement not covered" >        res.status(500).send('Something broke!')  </span>
     }
@@ -169,7 +169,7 @@
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Sat Aug 21 2021 14:27:05 GMT-0700 (GMT-07:00)
+                at Sun Aug 22 2021 14:23:05 GMT-0700 (GMT-07:00)
             </div>
         </div>
         <script src="../../prettify.js"></script>
