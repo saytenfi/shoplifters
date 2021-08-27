@@ -6,8 +6,7 @@ const userDAO = require('../daos/users');
 const ordersDAO = require('../daos/order');
 
 const errorReport = require("../middleware/ErrorReport");
-
-
+const order = require("../models/order");
 
 router.use(async (req, res, next) => {
     console.log(`${req.method} ${req.url} at ${new Date()}`);
@@ -96,6 +95,19 @@ router.get("/:id", async (req, res, next) => {
         
         res.json(order);
     } catch(e) {      
+        next(e);
+    }
+});
+
+router.put("/:id", async (req, res, next) => {
+    try {
+        const updatedOrder = await ordersDAO.updateById(req.body);
+        if(!updatedOrder) {
+            throw new Error('Could not update order');
+        } else {
+            res.json(updatedOrder);
+        }
+    } catch(e) {
         next(e);
     }
 });
