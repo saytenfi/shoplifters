@@ -57,7 +57,7 @@ module.exports.userRegister = async (req, res, next) => {
     } else {
       const createdUser = await login_Controller1.create(user);
       if(createdUser) {
-        res.status(200).redirect('/login');
+        res.redirect(307, '/login');
       } else {
         throw new Error('Could not create user');
       }

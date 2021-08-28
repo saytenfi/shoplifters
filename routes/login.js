@@ -10,6 +10,7 @@ const userDAO = require('../daos/users');
 
 router.use(async (req, res, next) => {
     console.log(`Login > ${req.method} ${req.path} at ${new Date()}`);
+    console.log('USER > ', req.body)
     next();
 });
 
@@ -41,7 +42,14 @@ router.post('/', async (req, res, next) => {
                         firstName: user.firstName,
                         lastName: user.lastName
                     },secret);
-                res.status(200).redirect(`/home/${tokenStr}`);
+                req.body = {email: user.email, token: tokenStr};
+
+                if(req.body.firstName) {
+                    res.redirect(307, `/home/${tokenStr}`);
+                } else {
+                    res.status(200).redirect(`/home/${tokenStr}`);
+                }
+                
             } else {
                 throw new Error('Password match failed');
             }
