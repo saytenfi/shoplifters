@@ -9,15 +9,17 @@ const errorReport = require("../middleware/ErrorReport");
 const order = require("../models/order");
 
 router.use(async (req, res, next) => {
-    console.log(`${req.method} ${req.url} at ${new Date()}`);
+    console.log('ORDER ROUTE');
+    console.log(`${req.method} ${req.path} at ${new Date()}`);
     next();
   });
 
 // router.use(isLoggedIn);
 
-router.post("/", async (req, res, next) => {
+router.post("/:id", async (req, res, next) => {
     try {      
-        const reqBody = req.body;
+        const reqBody = req.params.id;
+
         console.log(reqBody);
         if (reqBody){
             const productData = await productsDAO.getByIds(reqBody);
@@ -46,9 +48,12 @@ router.post("/", async (req, res, next) => {
                 console.log(orderData);
 
                 const created = await ordersDAO.create(orderData);
-                res.json(created);
+                if(created)
+                {
+                    res.render('products', {order: created});
+                }
             } else {
-                throw new BadDataError('Item not found');
+                throw new Error('Item not found');
             }
         } else {
             next();

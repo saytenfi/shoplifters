@@ -13,6 +13,7 @@ router.use(bodyParser.json());
 
 router.use(async (req, res, next) => {
     console.log(`${req.method} ${req.path} at ${new Date()}`);
+    console.log('BODY > ', req.body)
     next();
   });
 
@@ -34,6 +35,9 @@ router.use('/', (req, res, next) => {
 router.get('/home/:token', auth.isAuthenticated, (req,res,next) => {
   res.render('home', {user: req.user});
 });
+
+router.use('/products', require('./product'));
+router.use('/orderCreate/:id', require('./orderCreate'));
 
 // router.use('/password', require('./resetPassword'));
 

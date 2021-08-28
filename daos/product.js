@@ -21,3 +21,21 @@ module.exports.updateProduct = async (productId, productObj) => {
   }
 };
 
+module.exports.getAllProducts = async () => {
+  try {
+    const products = await Product.find().lean();
+    return products;
+  } catch(e) {
+    throw e;
+  }
+};
+
+module.exports.getByIds = async (productIds) => {
+  try {
+    const product = await Product.findOne({id: productIds}).lean();
+    return product;
+  } catch(e) {
+    throw e;
+  }
+};
+

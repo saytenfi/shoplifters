@@ -3,6 +3,8 @@ const router = Router();
 const productDAO = require('../daos/product');
 const errorHandler = require('../middleware/ErrorReport');
 
+const productJson = require('../products.json');
+
 router.use(async (req, res, next) => {
   console.log(`${req.method} ${req.url} at ${new Date()}`);
   next();
@@ -34,6 +36,28 @@ router.put('/:id', async (req, res, next) => {
     next(e);
   }
 });
+
+// router.get('/', async (req, res, next) => {
+//   // const products = await productDAO.getAllProducts();
+//   res.render('products', {products: [
+//     {
+//       id: 1,
+//       title: "Test Product 1",
+//       price: "$1.99"
+//     },
+//     {
+//       id: 2,
+//       title: "Test Product 2",
+//       price: "$2.99"
+
+//     }
+//   ]});
+// })
+
+router.get('/', async (req, res, next) => {
+  // const products = await productDAO.getAllProducts();
+  res.render('products', {products: productJson});
+})
 
 router.use(errorHandler);
 
