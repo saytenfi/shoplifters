@@ -39,3 +39,12 @@ module.exports.getByIds = async (productIds) => {
   }
 };
 
+module.exports.deleteById = async (productId) => {
+  try {
+    await Product.remove(productId);
+    return true;
+  } catch(e) {
+    throw e;
+  }
+};
+
