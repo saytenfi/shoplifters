@@ -17,16 +17,16 @@ router.use(async (req, res, next) => {
 // router.use(isLoggedIn);
 
 router.post("/:id", async (req, res, next) => {
-    try {      
+    try {
         const reqBody = req.params.id;
+        const quantity = req.body.quantity;
 
-        console.log(reqBody);
         if (reqBody){
-            const productData = await productsDAO.getByIds(reqBody);
+            const productData = await productsDAO.getProductById(reqBody);
             console.log(productData)
 
             if (productData && productData.length != 0){
-                let total = 0;
+                let total = reqBody*quantity;
                 let products = [];
                 reqBody.forEach(idToAdd => { 
                     productData.find((product) => {

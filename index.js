@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const port = process.env.PORT || 5000;
 
 mongoose.connect(
-  'mongodb+srv://endb:endb@cluster0.hgprh.mongodb.net/myFirstDatabase?authSource=admin&replicaSet=atlas-nv1yux-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true',
+  'mongodb+srv://api_user2:EyQVsU5nLLjyDyP6@uwshoplifters.zmjrf.mongodb.net/UWShopLifters?retryWrites=true&w=majority',
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,

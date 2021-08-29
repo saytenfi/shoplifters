@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const router = Router();
 bodyParser = require('body-parser');
+cookieParser = require('cookie-parser');
 
 const auth = require('../middleware/auth');
 const errorHandler = require('../middleware/ErrorReport');
@@ -10,6 +11,7 @@ router.use(bodyParser.urlencoded({
 }));
 
 router.use(bodyParser.json());
+router.use(cookieParser());
 
 router.use(async (req, res, next) => {
     console.log(`${req.method} ${req.path} at ${new Date()}`);
@@ -32,7 +34,9 @@ router.use('/', (req, res, next) => {
   }
 });
 
-router.get('/home/:token', auth.isAuthenticated, (req,res,next) => {
+router.use(auth.isAuthenticated);
+
+router.get('/home', (req,res,next) => {
   res.render('home', {user: req.user});
 });
 

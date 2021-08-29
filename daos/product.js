@@ -30,9 +30,18 @@ module.exports.getAllProducts = async () => {
   }
 };
 
+module.exports.getProductById = async (productId) => {
+  try {
+    const product = await Product.findOne({id: productId}).lean();
+    return product;
+  } catch(e) {
+    throw e;
+  }
+};
+
 module.exports.getByIds = async (productIds) => {
   try {
-    const product = await Product.findOne({id: productIds}).lean();
+    const product = await Product.find({id: productIds}).lean();
     return product;
   } catch(e) {
     throw e;
