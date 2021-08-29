@@ -42,13 +42,9 @@ router.post('/', async (req, res, next) => {
                         firstName: user.firstName,
                         lastName: user.lastName
                     },secret);
-                req.body = {email: user.email, token: tokenStr};
-
-                if(req.body.firstName) {
-                    res.redirect(307, `/home/${tokenStr}`);
-                } else {
-                    res.status(200).redirect(`/home/${tokenStr}`);
-                }
+                
+                res.cookie('AuthToken',`Bearer ${tokenStr}`);                    
+                res.redirect('/home')
                 
             } else {
                 throw new Error('Password match failed');
