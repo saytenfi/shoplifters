@@ -10,7 +10,32 @@ router.use(async (req, res, next) => {
   next();
 });
 
-///CREATE ORDER ROUTE///
+router.delete("/:id", async (req, res, next) => {
+  try {
+    if (!req.tokenIsValid) { 
+      throw new Error('Token is Invalid');
+    }
+    if (!req.isAdmin) { 
+      throw new Error('Not an Admin');
+    }
+    const itemData = {_id: req.params.id}
+    const success = await productsDAO.getById(itemData);
+    if (!success) {
+      throw new Error("Item not found");
+    }
+    const deleted = await productsDAO.deleteById(itemData);
+    
+  } catch(e) {      
+    next(e);
+  }
+});
+
+router.get('/', async (req, res, next) => {
+  // const products = await productDAO.getAllProducts();
+  res.render('products', {products: productJson});
+})
+
+///CREATE PRODUCT///
 router.post('/', async (req, res, next) => {
   try{
     const reqProduct = req.body;

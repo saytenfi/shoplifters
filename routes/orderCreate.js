@@ -14,8 +14,6 @@ router.use(async (req, res, next) => {
     next();
   });
 
-// router.use(isLoggedIn);
-
 router.post("/:id", async (req, res, next) => {
     try {
         const reqBody = req.params.id;
