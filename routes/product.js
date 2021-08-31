@@ -62,23 +62,15 @@ router.put('/:id', async (req, res, next) => {
   }
 });
 
+router.get('/', async (req, res, next) => {
+  const stored = await productDAO.getAllProducts();
+  res.render('products', {products: stored});
+})
+
 // router.get('/', async (req, res, next) => {
 //   // const products = await productDAO.getAllProducts();
-//   res.render('products', {products: [
-//     {
-//       id: 1,
-//       title: "Test Product 1",
-//       price: "$1.99"
-//     },
-//     {
-//       id: 2,
-//       title: "Test Product 2",
-//       price: "$2.99"
-
-//     }
-//   ]});
+//   res.render('products', {products: productJson});
 // })
-
 
 router.use(errorHandler);
 
