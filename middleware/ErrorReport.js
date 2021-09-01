@@ -25,7 +25,7 @@ const errorReport = (async (err, req, res, next) => {
         || err.message.includes("User not found") 
         || err.message.includes("malformed") 
         || err.message.includes("Not Authorized")) {   
-            res.status(401).send("Token is Invalid");
+            res.status(401).render('error', {message: "Token is Invalid"});
     } else {    
         res.status(500).send('Something broke!')  
     }

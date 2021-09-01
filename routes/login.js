@@ -33,15 +33,27 @@ router.post('/', async (req, res, next) => {
         } else {
             
             const pwdMatch = await bcrypt.compare(password, user.password);
+            const isAdmin = user.role === 'admin' ? true : false;
+            
+            let jwtUser = {
+                _id: user._id,
+                email: user.email,
+                firstName: user.firstName,
+                lastName: user.lastName 
+            };
+
+            jwtUser = {
+                ...jwtUser,
+                ...(isAdmin && {role: 'admin'}),
+            }
+
+            console.log('JWTUSER > ',jwtUser);
 
             if(pwdMatch) {
-                const tokenStr = jwt.sign(
-                    {
-                        _id: user._id,
-                        email: user.email,
-                        firstName: user.firstName,
-                        lastName: user.lastName
-                    },secret);
+
+                const tokenStr = jwt.sign(jwtUser,secret, {
+                    expiresIn: '30min'
+                });
                 
                 res.cookie('AuthToken',`Bearer ${tokenStr}`);                    
                 res.redirect('/home')
