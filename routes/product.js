@@ -3,13 +3,12 @@ const router = Router();
 const productDAO = require('../daos/product');
 const errorHandler = require('../middleware/ErrorReport');
 
-const productJson = require('../products.json');
-
 router.use(async (req, res, next) => {
   console.log(`${req.method} ${req.url} at ${new Date()}`);
   next();
 });
 
+//DELETE PRODUCT//
 router.delete("/:id", async (req, res, next) => {
   try {
     if (!req.tokenIsValid) { 
@@ -24,16 +23,22 @@ router.delete("/:id", async (req, res, next) => {
       throw new Error("Item not found");
     }
     const deleted = await productsDAO.deleteById(itemData);
+    res.json(deleted);
     
   } catch(e) {      
     next(e);
   }
 });
 
+//GET PRODUCTS//
 router.get('/', async (req, res, next) => {
-  // const products = await productDAO.getAllProducts();
-  res.render('products', {products: productJson});
-})
+  try{
+    const stored = await productDAO.getAllProducts();
+    res.status(200).render('products', {products: stored}); 
+  } catch(e) {
+    res.status(404).render('error');
+  }
+});
 
 ///CREATE PRODUCT///
 router.post('/', async (req, res, next) => {
@@ -49,7 +54,7 @@ router.post('/', async (req, res, next) => {
 
 })
 
-//update product 
+//UPDATE PRODUCT// 
 router.put('/:id', async (req, res, next) => {
   try {
       const productUpdated = await productDAO.updateProduct(req.params.id, req.body);
@@ -61,16 +66,6 @@ router.put('/:id', async (req, res, next) => {
     next(e);
   }
 });
-
-router.get('/', async (req, res, next) => {
-  const stored = await productDAO.getAllProducts();
-  res.render('products', {products: stored});
-})
-
-// router.get('/', async (req, res, next) => {
-//   // const products = await productDAO.getAllProducts();
-//   res.render('products', {products: productJson});
-// })
 
 router.use(errorHandler);
 
