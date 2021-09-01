@@ -23,8 +23,13 @@ router.get('/signup',(req,res,next) => {
   res.render('signup');
 });
 
+router.get('/resetPassword',(req,res,next) => {
+  res.render('resetPassword');
+});
+
 router.use('/register', require('./signup'));
 router.use('/login', require('./login'));
+router.use('/password', require('./resetPassword'));
 
 router.use('/', (req, res, next) => {
   if(req.path === '/') {
@@ -37,13 +42,12 @@ router.use('/', (req, res, next) => {
 router.use(auth.isAuthenticated);
 
 router.get('/home', (req,res,next) => {
-  res.render('home', {user: req.user});
+  res.status(200).render('home', {user: req.user});
 });
 
 router.use('/products', require('./product'));
-router.use('/orderCreate/:id', require('./orderCreate'));
-
-// router.use('/password', require('./resetPassword'));
+router.use('/orderCreate/user', require('./orderCreate'));
+router.use('/signout',require('./signout'));
 
 router.use(errorHandler);
 

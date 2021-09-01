@@ -15,10 +15,14 @@ module.exports.getAll = async () => {
 module.exports.getAllByUserId = async (userId) => {
   return await Order.find({userId: userId}).lean();
 }
+
+module.exports.getUserActiveOrder = async (userId) => {
+  return await Order.find({userId: userId, isActive: true}).lean();
+}
     
-module.exports.create = async (itemData) => {
+module.exports.create = async (order) => {
 try {
-    const created = await Order.create(itemData);
+    const created = await Order.create(order);
     return created;
   } catch (e) {    
     if (e.message.includes('validation failed') || e.message.includes('duplicate key')) {

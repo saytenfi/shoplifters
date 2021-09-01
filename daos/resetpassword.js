@@ -2,44 +2,44 @@ const mongoose = require("mongoose");
 // const users = mongoose.model("users");
 const nodemailer = require("nodemailer");
 const userModel = require("../models/users");
-// const crypto = require("crypto");
+const crypto = require("crypto");
 const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
 
 const userDAO = require('./users');
 
-// module.exports.userExist = async (req, res, next) => {
-//   try {
-//     console.log("In reset");
+module.exports.userExist = async (req, res, next) => {
+  try {
+    console.log("In reset");
 
-//   }
-//   catch(e) {
-//     next(e);
-//   }
+  }
+  catch(e) {
+    next(e);
+  }
   
 
-//   // crypto.randomBytes(32, (err, buffer) => {
-//   //   if (err) {
-//   //     console.log(err);
-//   //   }
+  crypto.randomBytes(32, (err, buffer) => {
+    if (err) {
+      console.log(err);
+    }
     
-//   //   const token = buffer.toString("hex");
-//   //   userModel.findOne({ email: req.body.email }).then((user) => {
-//   //     if (!user) {
-//   //       return res
-//   //         .status(422)
-//   //         .json({ error: "user does't exists with that email" });
-//   //     }
-//   //     user.resetToken = token;
-//   //     user.expireToken = Date.now() + 3600000;
-//   //     user.save().then((result) => {
-//   //       sendMail(user.email, token);
-//   //       res.json({ message: "check your email" });
-//   //     });
-//   //   });
-//   // });
+    const token = buffer.toString("hex");
+    userModel.findOne({ email: req.body.email }).then((user) => {
+      if (!user) {
+        return res
+          .status(422)
+          .json({ error: "user does't exists with that email" });
+      }
+      user.resetToken = token;
+      user.expireToken = Date.now() + 3600000;
+      user.save().then((result) => {
+        sendMail(user.email, token);
+        res.json({ message: "check your email" });
+      });
+    });
+  });
 
-// };
+};
 
 module.exports.newPassword = async (req, res, next) => {
   const newpassword = req.body.password;
@@ -83,7 +83,7 @@ async function sendMail(email, token) {
   });
 
   
-  const urlLink = "http://localhost:9000/verifypassword/:" + token;
+  const urlLink = "http://localhost:5000/verifypassword/:" + token;
   var mailOptions = {
     from: "endb179@gmail.com",
     to: email,

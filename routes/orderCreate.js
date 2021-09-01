@@ -6,7 +6,7 @@ const userDAO = require('../daos/users');
 const ordersDAO = require('../daos/order');
 
 const errorReport = require("../middleware/ErrorReport");
-const order = require("../models/order");
+// const order = require("../models/order");
 
 router.use(async (req, res, next) => {
     console.log('ORDER ROUTE');
@@ -18,40 +18,25 @@ router.post("/:id", async (req, res, next) => {
     try {
         const reqBody = req.params.id;
         const quantity = req.body.quantity;
+        const user = await userDAO.getUserByEmail(req.user.email);
+        const order = await ordersDAO.getUserActiveOrder(user._id);
+        const productData = await productsDAO.getProductById(reqBody);
 
-        if (reqBody){
-            const productData = await productsDAO.getProductById(reqBody);
-            console.log(productData)
+        if(!order) {
+            let products = [];
+            products.push(productData._id);
 
-            if (productData && productData.length != 0){
-                let total = reqBody*quantity;
-                let products = [];
-                reqBody.forEach(idToAdd => { 
-                    productData.find((product) => {
-                        if (product._id == idToAdd){
-                            product.push(product);
-                            // total += product.price;
-                        }
-                    });
-                });
+            const orderObj = {
+                userId: user._id,
+                isActive: true,
+                products: products
+            };
 
-                if (reqBody.length != product.length) {
-                    throw new Error('item not found')
-                }
-                const orderData = {
-                    userId: req.user._id,
-                    products: products,
-                    total: total
-                };
-                console.log(orderData);
-
-                const created = await ordersDAO.create(orderData);
-                if(created)
-                {
-                    res.render('products', {order: created});
-                }
+            const createdOrder = await ordersDAO.create(orderObj);
+            if(createdOrder) {
+                res.status(200).render('products');
             } else {
-                throw new Error('Item not found');
+                res.status(404).render('error',{message: `Could not create order`});
             }
         } else {
             next();
@@ -102,18 +87,18 @@ router.get("/:id", async (req, res, next) => {
     }
 });
 
-router.put("/:id", async (req, res, next) => {
-    try {
-        const updatedOrder = await ordersDAO.updateById(req.body);
-        if(!updatedOrder) {
-            throw new Error('Could not update order');
-        } else {
-            res.json(updatedOrder);
-        }
-    } catch(e) {
-        next(e);
-    }
-});
+// router.put("/:id", async (req, res, next) => {
+//     try {
+//         const updatedOrder = await ordersDAO.updateById(req.body);
+//         if(!updatedOrder) {
+//             throw new Error('Could not update order');
+//         } else {
+//             res.json(updatedOrder);
+//         }
+//     } catch(e) {
+//         next(e);
+//     }
+// });
 
 router.use(errorReport);
 
