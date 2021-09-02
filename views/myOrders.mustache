@@ -17,9 +17,15 @@
         .w3-bar-block .w3-bar-item {
             padding: 20px;
         },
-        .deck-container {
-            width: 300px;
-            padding: 5%;
+        .flex-container {
+            display: flex;
+            flex-flow: row wrap;
+        }
+        .flex-container > .flex-item {
+            flex: auto;
+            border: 1px solid;
+            padding: 10px;
+            box-shadow: 5px 10px 18px #888888;
         }
     </style>
     <body>
@@ -32,13 +38,9 @@
                         <a class="nav-link" href="/home">Home</a>
                     </li>
                     <li class="nav-item active">
-                        <a class="nav-link" href="/myOrders">My Orders</a>
+                        <a class="nav-link" href="/products">Products</a>
                     </li>
                 </ul>
-                <form class="form-inline my-2 my-lg-0">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                </form>
             </div>
         </nav>
 
@@ -46,37 +48,30 @@
         <div class="deck-container">
             <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
                 <div class="card-group">
-                {{#products}}
+                {{#orders}}
                     <div class="col mb-4" key={{_id}}>
-                        <div class="card">
-                            <img class="card-img-top" src={{image}} style="18rem;">
+                        <div class="card" style="18rem;">
                             <div class="card-body">
-                                <h5 class="card-title">{{title}}</h5>
-                                <p class="card-text">{{price}}</p>
+                                <h5 class="card-title">Order #: {{_id}}</h5>
+                                {{#products}}
+                                    <p class="card-text">{{_id}}</p>
+                                {{/products}}
                                 <div class="card-footer">
-                                    <form class="form-inline my-2 my-lg-0" action="/orderCreate/create" method="post">
-                                        <input
-                                            class="form-control mr-sm-2"
-                                            name="quantity"
-                                            type="number"
-                                            min=0
-                                            placeholder=0
-                                        >
-                                        <input
-                                            class="form-control mr-sm-2"
-                                            name="product"
-                                            type="hidden"
-                                            value={{id}}
-                                        >
-                                        <input type="submit" class="btn btn-outline-success my-2 my-sm-0" value="Add To Cart" />
-                                    </form>
+                                    Order Total: ${{orderTotal}}
+                                    {{#isActive}}
+                                        <form class="form-inline my-2 my-lg-0" action="/orderCreate/checkout" method="post">
+                                            <input class="form-control mr-sm-2" type="submit" value="Checkout">
+                                            <input class="form-control mr-sm-2" name="order" value="{{_id}}" type="hidden">    
+                                        </form>
+                                    {{/isActive}}
                                 </div>
                             </div>
                         </div>                
                     </div>
-                {{/products}}
+                {{/orders}}
                 </div>
             </div>        
         </div>
+
     </body>
 </html>

@@ -6,62 +6,104 @@ const userDAO = require('../daos/users');
 const ordersDAO = require('../daos/order');
 
 const errorReport = require("../middleware/ErrorReport");
-// const order = require("../models/order");
 
 router.use(async (req, res, next) => {
     console.log('ORDER ROUTE');
     console.log(`${req.method} ${req.path} at ${new Date()}`);
     next();
-  });
+});
 
-router.post("/:id", async (req, res, next) => {
+/////////////////////////////////////////////////////////////////////////
+//   Due to the HTML limitation for UPDATING, we are using a POST
+//   to perform updates as well as creating an order
+/////////////////////////////////////////////////////////////////////////
+router.post("/create", async (req, res, next) => {
     try {
-        const reqBody = req.params.id;
-        const quantity = req.body.quantity;
+        const { quantity , product } = req.body;
         const user = await userDAO.getUserByEmail(req.user.email);
         const order = await ordersDAO.getUserActiveOrder(user._id);
-        const productData = await productsDAO.getProductById(reqBody);
+        const productData = await productsDAO.getProductById(parseInt(product));
 
-        if(!order) {
+        if(order.length === 0 ) {
+            console.log('-- Order not exists --');
             let products = [];
-            products.push(productData._id);
+            for(let idx=0; idx <= quantity-1; idx++) {
+                products.push(productData._id);
+            }
 
             const orderObj = {
                 userId: user._id,
                 isActive: true,
+                orderTotal: productData.price * quantity,
                 products: products
             };
 
             const createdOrder = await ordersDAO.create(orderObj);
+
             if(createdOrder) {
-                res.status(200).render('products');
+                res.redirect('/products');
             } else {
                 res.status(404).render('error',{message: `Could not create order`});
             }
         } else {
-            next();
-        }
-    } catch(e) {      
-      next(e);
-    }
-  });
+            console.log('-- Order exists --');
+            const newOrder = order[0];
+            const orderProducts = newOrder.products;
 
- router.get("/", async (req, res, next) => {
-    try {
-        if (!req.tokenIsValid) { 
-            throw new Error('Token is Invalid');
+            for(let idx=0; idx <= quantity-1; idx++) {
+                orderProducts.push(productData._id);
+            }
+
+            newOrder.products = orderProducts;
+            newOrder.orderTotal = newOrder.orderTotal + (productData.price * quantity);
+
+            const updatedOrder = await ordersDAO.updateById(newOrder);
+            if(updatedOrder) {
+                res.redirect('/products');
+            } else {
+                res.status(404).render('error',{message: `Could not update order`});
+            }
         }
-        if (req.isAdmin) {
-            const orders = await ordersDAO.getAll();
-            res.json(orders);
-        } else {
-            const orders = await ordersDAO.getAllByUserId(req.user._id);
-            res.json(orders);
-        }
-    } catch(e) {      
+    } catch(e) {
+        console.log(e);
         next(e);
     }
 });
+  
+router.post("/checkout", async (req, res, next) => {
+    try {
+        const order = await ordersDAO.getById(req.body.order);
+        order.isActive = false;
+
+        const updatedOrder = await ordersDAO.updateById(order);
+        if(updatedOrder) {
+            res.redirect('/home');
+        } else {
+            res.status(404).render('error',{message: `Could not update order`});
+        }
+
+    } catch(e) {
+        next(e);
+    }
+});
+
+router.get("/", async (req, res, next) => {
+  try {
+      if (!req.tokenIsValid) { 
+          throw new Error('Token is Invalid');
+      }
+      if (req.isAdmin) {
+          const orders = await ordersDAO.getAll();
+          res.json(orders);
+      } else {
+          const orders = await ordersDAO.getAllByUserId(req.user._id);
+          res.json(orders);
+      }
+  } catch(e) {      
+      next(e);
+  }
+});
+
 
 router.get("/:id", async (req, res, next) => {
     try {

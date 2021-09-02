@@ -1,24 +1,13 @@
 <html>
     <head>
-        <style type="text/css">
-            p {
-                color: #0ecc8a;
-                font-weight: 900;
-                font-size: 20px;
-                font-family: Helvetica, Arial, sans-serif;
-            }
-
-            div {
-                background-color: gray;
-            }
-        </style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     </head>
 
     <body>
         <div>
             <p>
-                Something went wrong!
-                <button onClick="">Go Back</button>
+                Something went wrong: {{message}}
+                <a class="btn btn-info btn-sm" href="/login" role="button">Back to Login</a>
             </p>
         </div>
     </body>

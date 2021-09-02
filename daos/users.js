@@ -25,7 +25,7 @@ module.exports.userRegister = async (req, res, next) => {
   try
   {
     console.log("registered", req.body);
-    let { email, firstName, lastName, password, confirmPassword } = req.body;
+    let { email, firstName, lastName, password, confirmPassword, role } = req.body;
   
     if (!email || !password || !firstName || !lastName || !confirmPassword
       || email.length === 0 || password.length === 0
@@ -43,13 +43,18 @@ module.exports.userRegister = async (req, res, next) => {
     let chash = await bcrypt.hash(confirmPassword, csalt);
     confirmPassword = chash;
 
-    const user = {
+    let user = {
       email: email,
       password: password,
       confirmPassword: confirmPassword,
       lastName: lastName,
       firstName: firstName
     };
+
+    user = {
+      ...user,
+      ...(role === 'admin' && {role: 'admin'})
+    }
 
     const savedUser = await login_Controller1.findOne({email: email}).lean();
     if(savedUser) {

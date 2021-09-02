@@ -45,8 +45,9 @@ router.get('/home', (req,res,next) => {
   res.status(200).render('home', {user: req.user});
 });
 
+router.use('/myOrders', require('./myOrders'));
 router.use('/products', require('./product'));
-router.use('/orderCreate/user', require('./orderCreate'));
+router.use('/orderCreate', require('./orderCreate'));
 router.use('/signout',require('./signout'));
 
 router.use(errorHandler);
