@@ -42,7 +42,11 @@ router.use('/', (req, res, next) => {
 router.use(auth.isAuthenticated);
 
 router.get('/home', (req,res,next) => {
-  res.status(200).render('home', {user: req.user});
+  if(req.user.role === 'admin') {
+    res.status(200).render('adminHome', {user: req.user});  
+  } else {
+    res.status(200).render('home', {user: req.user});
+  }
 });
 
 router.use('/myOrders', require('./myOrders'));

@@ -1,19 +1,52 @@
 const mongoose = require('mongoose');
 
 const Order = require('../models/order');
+const Product = require('../models/product');
 
 module.exports = {};
 
-module.exports.getById = async (orderId) => {
-  return await Order.findOne({ _id: orderId }).populate("items").lean();
-}
-    
 module.exports.getAll = async () => {
   return await Order.find().lean();
 }
   
-module.exports.getAllByUserId = async (userId) => {
-  return await Order.find({userId: userId}).lean();
+module.exports.getAllByUserId = async (user_id) => {
+  try {
+    const userOrder = await Order.aggregate([
+      { $match: {userId: mongoose.Types.ObjectId(user_id)}},
+      { $unwind: "$products" },
+      {
+        $lookup: {
+          from: "products",
+          localField: "products",
+          foreignField: "_id",
+          as: "orderProducts"
+        }
+      },
+      { $unwind: "$orderProducts" },
+      {
+        $group: {
+          _id: "$_id",
+          userId: { $first: "$userId" },
+          products: { $push: "$orderProducts"},
+          orderTotal: { $first: "$orderTotal" },
+          isActive: { $first: "$isActive" }
+        }
+      },
+      {
+        $project: {
+          _id: 1,
+          products: {
+            __v: 0
+          }
+        }
+      }
+    ]);
+
+    return userOrder;
+
+  } catch(e) {
+    throw e;
+  }
 }
 
 module.exports.getUserActiveOrder = async (userId) => {
@@ -21,7 +54,7 @@ module.exports.getUserActiveOrder = async (userId) => {
 }
     
 module.exports.create = async (order) => {
-try {
+  try {
     const created = await Order.create(order);
     return created;
   } catch (e) {    
@@ -32,14 +65,19 @@ try {
     }
 }
 
-  module.exports.updateById = async (orderData) => {
-    
-    if (!mongoose.Types.ObjectId.isValid(orderData._id)) {
-      return null;
-    }
-    const updated = await Order.updateOne(orderData);
-    return updated;
+module.exports.updateById = async (orderData) => {
+  
+  if (!mongoose.Types.ObjectId.isValid(orderData._id)) {
+    return null;
   }
+
+  const id = orderData._id;
+  delete orderData._id;
+  
+  const updated = await Order.findOneAndUpdate({ _id: id }, orderData);
+  return updated;
+
+}
   
 
 class BadDataError extends Error {};
