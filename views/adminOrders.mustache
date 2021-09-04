@@ -1,0 +1,92 @@
+<html>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Karma" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <style>
+        body,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: "Karma", sans-serif;
+        }
+        .w3-bar-block .w3-bar-item {
+            padding: 20px;
+        },
+        .flex-container {
+            display: flex;
+            flex-flow: row wrap;
+        }
+        .flex-container > .flex-item {
+            flex: auto;
+            border: 1px solid;
+            padding: 10px;
+            box-shadow: 5px 10px 18px #888888;
+        }
+    </style>
+    <body>
+        <!-- Top menu -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand">ShopLifters</a>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/admin/products">Admin Products</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/admin/orders">Admin Orders</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/admin/users">Admin Users</a>
+                    </li>   
+                </ul>
+                <form class="form-inline my-2 my-lg-0" action="/admin/orders/search" method="get">
+                    <input class="form-control mr-sm-2" type="search" name="search" placeholder="Search" aria-label="Search">
+                    <input type="submit" class="btn btn-outline-success my-2 my-sm-0" value="Search" />
+                </form>                
+            </div>
+        </nav>
+
+        <!-- !PAGE CONTENT! -->
+        <div class="deck-container">
+            <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
+                <div class="card-group">
+                {{#orders}}
+                    <div class="col mb-4" key={{_id}}>
+                        <div class="card" style="18rem;">
+                            <div class="card-body">
+                                <h5 class="card-title">Order #: {{_id}}</h5>
+                                {{#products}}
+                                    <p class="card-text">{{_id}}</p>
+                                {{/products}}
+                                <div class="card-footer">
+                                    Order Total: ${{orderTotal}}
+                                    {{#isActive}}
+                                        <form class="form-inline my-2 my-lg-0" action="/orderCreate/checkout" method="post">
+                                            <input class="form-control mr-sm-2" type="submit" value="Checkout">
+                                            <input class="form-control mr-sm-2" name="order" value="{{_id}}" type="hidden">    
+                                        </form>
+                                    {{/isActive}}
+                                </div>
+                            </div>
+                        </div>                
+                    </div>
+                {{/orders}}
+                {{^orders}}
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <strong>No Orders to display</strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {{/orders}}
+                </div>
+            </div>        
+        </div>
+
+    </body>
+</html>

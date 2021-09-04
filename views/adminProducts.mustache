@@ -1,0 +1,142 @@
+<html>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Karma" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <style>
+        body,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: "Karma", sans-serif;
+        }
+        .w3-bar-block .w3-bar-item {
+            padding: 20px;
+        },
+        .deck-container {
+            width: 300px;
+            padding: 5%;
+        }
+    </style>
+    <body>
+        <!-- Top menu -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand">ShopLifters</a>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/admin/products">Admin Products</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/admin/orders">Admin Orders</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/admin/users">Admin Users</a>
+                    </li>   
+                </ul>
+                <form class="form-inline my-2 my-lg-0" action="/admin/products/search" method="get">
+                    <input class="form-control mr-sm-2" type="search" name="search" placeholder="Search" aria-label="Search">
+                    <input type="submit" class="btn btn-outline-success my-2 my-sm-0" value="Search" />
+                </form>
+            </div>
+        </nav>
+
+        <!-- !PAGE CONTENT! -->
+        <div class="deck-container">
+            <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
+                <div class="card-group">
+                {{#products}}
+                    <div class="col mb-4" key={{_id}}>
+                        <div class="card">
+                            <img class="card-img-top" src={{image}}>
+                            <div class="card-body">
+                                <form class="form-inline my-2 my-lg-0" action="/admin/products/update" method="post">
+                                    <div class="input">
+                                        <input
+                                            type="text"
+                                            class="input_field"
+                                            name="imageUrl"
+                                            id="imageUrl"
+                                            placeholder={{image}}
+                                        />
+                                    </div>
+                                    <div class="input">
+                                        <input
+                                            type="text"
+                                            class="input_field"
+                                            name="title"
+                                            id="title"
+                                            placeholder={{title}}
+                                        />
+                                    </div>
+                                    <div class="input">
+                                        <input
+                                            type="number"
+                                            class="input_field"
+                                            name="price"
+                                            id="price"
+                                            placeholder={{price}}
+                                        />
+                                    </div>
+                                    <div class="input">
+                                        <input
+                                            type="text"
+                                            class="input_field"
+                                            name="description"
+                                            id="description"
+                                            placeholder={{description}}
+                                        />
+                                    </div>
+                                    <div class="input">
+                                        <input
+                                            type="text"
+                                            class="input_field"
+                                            name="category"
+                                            id="category"
+                                            placeholder={{category}}
+                                        />
+                                    </div>
+                                    <div class="input">
+                                        <input
+                                            type="hidden"
+                                            class="input_field"
+                                            name="id"
+                                            id="id"
+                                            value={{id}}
+                                        />
+                                    </div>
+                                    <input type="submit" class="btn btn-outline-success my-2 my-sm-0" value="Update Product" />
+                                </form>
+                                <form class="form-inline my-2 my-lg-0" action="/admin/products/delete" method="post">
+                                    <div class="input">
+                                        <input
+                                            type="hidden"
+                                            class="input_field"
+                                            name="id"
+                                            id="id"
+                                            value={{id}}
+                                        />
+                                    </div>
+                                    <input type="submit" class="btn btn-outline-danger my-2 my-sm-0" value="Delete Product" />
+                                </form>
+                            </div>
+                        </div>                
+                    </div>
+                {{/products}}
+                {{^products}}
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <strong>No Products to display</strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {{/products}}
+                </div>
+            </div>        
+        </div>
+    </body>
+</html>

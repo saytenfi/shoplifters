@@ -27,6 +27,10 @@ router.get('/resetPassword',(req,res,next) => {
   res.render('resetPassword');
 });
 
+router.get('/verifyPassword/:token',(req,res,next) => {
+  res.render('verifyPassword', {token: req.params.token});
+});
+
 router.use('/register', require('./signup'));
 router.use('/login', require('./login'));
 router.use('/password', require('./resetPassword'));
@@ -53,6 +57,8 @@ router.use('/myOrders', require('./myOrders'));
 router.use('/products', require('./product'));
 router.use('/orderCreate', require('./orderCreate'));
 router.use('/signout',require('./signout'));
+
+router.use('/admin', require('./admin'));
 
 router.use(errorHandler);
 

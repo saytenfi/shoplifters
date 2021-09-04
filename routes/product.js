@@ -30,6 +30,23 @@ router.delete("/:id", async (req, res, next) => {
   }
 });
 
+router.get('/search', async (req, res, next) => {
+
+  try{
+    const searchStr = req.query.search;
+
+    if(!searchStr) {
+      res.redirect('/products');
+    } else {
+      const stored = await productDAO.getBySearchString(searchStr);
+      res.status(200).render('products', {products: stored});
+    }
+ 
+  } catch(e) {
+    res.status(404).render('error');
+  }
+});
+
 //GET PRODUCTS//
 router.get('/', async (req, res, next) => {
   try{

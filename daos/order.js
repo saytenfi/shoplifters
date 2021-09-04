@@ -8,6 +8,11 @@ module.exports = {};
 module.exports.getAll = async () => {
   return await Order.find().lean();
 }
+
+module.exports.getById = async (orderId) => {
+  return await Order.findOne({ _id: orderId }).populate("items").lean();
+}
+
   
 module.exports.getAllByUserId = async (user_id) => {
   try {
@@ -77,6 +82,21 @@ module.exports.updateById = async (orderData) => {
   const updated = await Order.findOneAndUpdate({ _id: id }, orderData);
   return updated;
 
+}
+
+module.exports.getBySearchString = async (searchStr) => {
+  try {
+    const orders = await Order.find(
+      { $text: { $search: searchStr }},
+      {score: { $meta: "textScore" }}
+    ).sort({ score: { $meta: "textScore" }}
+    ).lean();
+
+    return orders;
+    
+  } catch(e) {
+    throw e;
+  }
 }
   
 
