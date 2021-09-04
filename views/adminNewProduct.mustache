@@ -1,0 +1,83 @@
+<html>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Karma" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+    <style>
+        body,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: "Karma", sans-serif;
+        }
+        .w3-bar-block .w3-bar-item {
+            padding: 20px;
+        }
+        ,
+        .deck-container {
+            width: 300px;
+            padding: 5%;
+        }
+    </style>
+    <body>
+        <!-- Top menu -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand">ShopLifters</a>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/admin/products">Admin Products</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/admin/orders">Admin Orders</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/admin/users">Admin Users</a>
+                    </li>
+                </ul>
+                <form class="form-inline my-2 my-lg-0" action="/admin/products/search" method="get">
+                    <input class="form-control mr-sm-2" type="search" name="search" placeholder="Search" aria-label="Search" />
+                    <input type="submit" class="btn btn-outline-success my-2 my-sm-0" value="Search" />
+                </form>
+            </div>
+        </nav>
+
+        <!-- !PAGE CONTENT! -->
+        <div class="card">
+            <div class="card-body">
+                <form action="/admin/products/new" method="post">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="image">Image URL:</label>
+                            <input type="text" class="form-control" id="image" name="image" required />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="title">Title:</label>
+                            <input type="text" class="form-control" id="title" name="title" required />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="category">Category:</label>
+                        <input type="text" class="form-control" id="category" name="category" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="price">Price:</label>
+                        <input type="number" class="form-control" id="price" name="price" min="0" placeholder="0" required />
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="description">Description:</label>
+                        <textarea class="form-control" name="description" id="description" rows="3"></textarea>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <input type="hidden" class="form-control" id="id" name="id" value={{maxId}} />
+                    </div>
+                    <button type="submit" class="btn btn-primary">Create</button>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>

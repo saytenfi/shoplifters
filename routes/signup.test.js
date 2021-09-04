@@ -33,13 +33,6 @@ describe("/register", () => {
         expect(res.statusCode).toEqual(401);
       });
     });
-
-    describe("POST /resetPassword", () => {
-      it("should return 401", async () => {
-        const res = await request(server).post("/resetPassword").send(testUser);
-        expect(res.statusCode).toEqual(401);
-      });
-    });
   });
   
   describe("fail signup due to missing element ", () => {
@@ -131,7 +124,7 @@ describe("/register", () => {
   describe.each([testUser, adminUser])("User %#", (user) => {
     it("should return 302 redirect", async () => {
         const res = await request(server).post("/register/signup").send(user);
-        expect(res.statusCode).toEqual(302);
+        expect(res.statusCode).toEqual(307);
       });
   });
 });

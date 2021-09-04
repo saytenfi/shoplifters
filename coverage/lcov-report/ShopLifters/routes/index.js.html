@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">76.32% </span>
+                <span class="strong">77.5% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>29/38</span>
+                <span class='fraction'>31/40</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">76.32% </span>
+                <span class="strong">77.5% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>29/38</span>
+                <span class='fraction'>31/40</span>
             </div>
         
             
@@ -121,25 +121,32 @@
 <a name='L62'></a><a href='#L62'>62</a>
 <a name='L63'></a><a href='#L63'>63</a>
 <a name='L64'></a><a href='#L64'>64</a>
-<a name='L65'></a><a href='#L65'>65</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L65'></a><a href='#L65'>65</a>
+<a name='L66'></a><a href='#L66'>66</a>
+<a name='L67'></a><a href='#L67'>67</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">19x</span>
+<span class="cline-any cline-yes">19x</span>
+<span class="cline-any cline-yes">19x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
@@ -151,10 +158,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -181,6 +184,7 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
@@ -190,7 +194,8 @@ const router = Router();
 bodyParser = require('body-parser');
 cookieParser = require('cookie-parser');
 &nbsp;
-const auth = require('../middleware/auth');
+const authenticate = require('../middleware/auth');
+const authorize = require('../middleware/isAdmin');
 const errorHandler = require('../middleware/ErrorReport');
 &nbsp;
 router.use(bodyParser.urlencoded({
@@ -230,7 +235,7 @@ router.use('/', <span class="fstat-no" title="function not covered" >(r</span>eq
   }
 });
 &nbsp;
-router.use(auth.isAuthenticated);
+router.use(authenticate.isAuthenticated);
 &nbsp;
 router.get('/home', <span class="fstat-no" title="function not covered" >(r</span>eq,res,next) =&gt; {
 <span class="cstat-no" title="statement not covered" >  if(req.user.role === 'admin') {</span>
@@ -245,6 +250,7 @@ router.use('/products', require('./product'));
 router.use('/orderCreate', require('./orderCreate'));
 router.use('/signout',require('./signout'));
 &nbsp;
+router.use(authorize.isAdmin);
 router.use('/admin', require('./admin'));
 &nbsp;
 router.use(errorHandler);
@@ -256,7 +262,7 @@ module.exports = router;</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Fri Sep 03 2021 17:46:33 GMT-0700 (GMT-07:00)
+                at Sat Sep 04 2021 11:02:51 GMT-0700 (GMT-07:00)
             </div>
         </div>
         <script src="../../prettify.js"></script>

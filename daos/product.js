@@ -74,3 +74,13 @@ module.exports.deleteById = async (productId) => {
 
 };
 
+module.exports.getMaxProductId = async () => {
+  try {
+    const maxProductId = (await Product.find().sort({id:-1}).limit(1))[0].id;
+    console.log(maxProductId)
+    return maxProductId;
+  } catch(e) {
+    throw e;
+  }
+};
+
