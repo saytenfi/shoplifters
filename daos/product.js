@@ -39,6 +39,21 @@ module.exports.getProductById = async (productId) => {
   }
 };
 
+module.exports.getBySearchString = async (searchStr) => {
+  try {
+    const products = await Product.find(
+      { $text: { $search: searchStr }},
+      {score: { $meta: "textScore" }}
+    ).sort({ score: { $meta: "textScore" }}
+    ).lean();
+
+    return products;
+    
+  } catch(e) {
+    next(e)
+  }
+}
+
 module.exports.getByIds = async (productIds) => {
   try {
     const product = await Product.find({id: productIds}).lean();
@@ -49,11 +64,13 @@ module.exports.getByIds = async (productIds) => {
 };
 
 module.exports.deleteById = async (productId) => {
-  try {
-    await Product.remove(productId);
-    return true;
-  } catch(e) {
-    throw e;
-  }
+
+  if (!mongoose.Types.ObjectId.isValid(productId)) {
+    return false;
+  };
+  
+  await Product.deleteOne({_id: productId});
+  return true;
+
 };
 

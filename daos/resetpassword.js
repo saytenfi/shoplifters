@@ -1,12 +1,9 @@
 const mongoose = require("mongoose");
-// const users = mongoose.model("users");
 const nodemailer = require("nodemailer");
 const userModel = require("../models/users");
 const crypto = require("crypto");
 const bcrypt = require("bcrypt");
-const jwt = require('jsonwebtoken');
 
-const userDAO = require('./users');
 
 module.exports.userExist = async (req, res, next) => {
   try {
@@ -34,7 +31,7 @@ module.exports.userExist = async (req, res, next) => {
       user.expireToken = Date.now() + 3600000;
       user.save().then((result) => {
         sendMail(user.email, token);
-        res.json({ message: "check your email" });
+        res.status(200).render('index', { message: {hdr: "Email Sent.", msg: "Please check your email." }});
       });
     });
   });
@@ -45,21 +42,23 @@ module.exports.newPassword = async (req, res, next) => {
   const newpassword = req.body.password;
   let confirmPassword = req.body.confirmPassword;
   const sentToken = req.body.token;
+
   userModel
     .findOne({ resetToken: sentToken, expireToken: { $gt: Date.now() } })
     .then((user) => {
       if (!user) {
         return res.status(422).json({ error: "Try again session expired" });
       }
-      bcrypt
-        .hash(newpassword, 12)
+
+      bcrypt.hash(newpassword, 5)
         .then((hashedpassword) => {
+          console.log(hashedpassword);
           user.password = hashedpassword;
           (user.confirmPassword = hashedpassword),
-            (user.expireToken = undefined);
+          (user.expireToken = undefined);
           user.resetToken = undefined;
           user.save().then((saved) => {
-            res.json({ message: "password saved successfully" });
+            res.status(200).render('index',{ message: {hdr: "Password Saved", msg: "Your password was updated." }});
           });
         })
         .catch((err) => {
@@ -83,7 +82,7 @@ async function sendMail(email, token) {
   });
 
   
-  const urlLink = "http://localhost:5000/verifypassword/:" + token;
+  const urlLink = "http://localhost:5000/verifypassword/" + token;
   var mailOptions = {
     from: "endb179@gmail.com",
     to: email,

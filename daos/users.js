@@ -1,7 +1,12 @@
 const bcrypt = require("bcrypt");
 const login_Controller1 = require("../models/users");
+const mongoose = require('mongoose');
 
 module.exports = {};
+
+module.exports.getAllUsers = async () => {
+  return await login_Controller1.find().lean();
+};
 
 module.exports.getUserByEmail = async (userEmail) => {
   try {
@@ -16,6 +21,42 @@ module.exports.getUserById = async (userId) => {
   try {
     const existingUser = await login_Controller1.findOne({ _id: userId}).lean();
     return existingUser;
+  } catch(e) {
+    throw e;
+  }
+};
+
+module.exports.updateUserById = async (user_id, userObj) => {
+  try {
+    const updatedUser = await login_Controller1.updateOne({ _id: user_id}, userObj).lean();
+    return updatedUser;
+  } catch(e) {
+    throw e;
+  }
+};
+
+module.exports.deleteById = async (user_id) => {
+
+  if (!mongoose.Types.ObjectId.isValid(user_id)) {
+    return false;
+  };
+  
+  await login_Controller1.deleteOne({_id: user_id});
+  return true;
+
+};
+
+module.exports.getBySearchString = async (searchStr) => {
+  try {
+    const users = await login_Controller1.find(
+      { $text: { $search: searchStr, $caseSensitive: false }},
+      {score: { $meta: "textScore" }}
+    ).sort({ score: { $meta: "textScore" }}
+    ).lean();
+
+    console.log(users);
+    return users;
+    
   } catch(e) {
     throw e;
   }
