@@ -34,7 +34,8 @@ module.exports.getAllByUserId = async (user_id) => {
           userId: { $first: "$userId" },
           products: { $push: "$orderProducts"},
           orderTotal: { $first: "$orderTotal" },
-          isActive: { $first: "$isActive" }
+          isActive: { $first: "$isActive" },
+          isCanceled: {$first: "$isCanceled"}
         }
       },
       {
@@ -98,7 +99,6 @@ module.exports.getBySearchString = async (searchStr) => {
     throw e;
   }
 }
-  
 
 class BadDataError extends Error {};
 module.exports.BadDataError = BadDataError;

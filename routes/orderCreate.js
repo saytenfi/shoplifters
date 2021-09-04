@@ -35,7 +35,8 @@ router.post("/create", async (req, res, next) => {
                 userId: user._id,
                 isActive: true,
                 orderTotal: productData.price * quantity,
-                products: products
+                products: products,
+                isCanceled: false
             };
 
             const createdOrder = await ordersDAO.create(orderObj);
@@ -87,6 +88,25 @@ router.post("/checkout", async (req, res, next) => {
     }
 });
 
+router.post("/cancel", async (req, res, next) => {
+    try {
+        const order = await ordersDAO.getById(req.body.order);
+        order.isActive = false;
+        order.isCanceled = true;
+
+        console.log(order);
+        const updatedOrder = await ordersDAO.updateById(order);
+        if(updatedOrder) {
+            res.redirect('/myOrders');
+        } else {
+            res.status(404).render('error',{message: `Could not update order`});
+        }
+
+    } catch(e) {
+        next(e);
+    }
+});
+
 router.get("/", async (req, res, next) => {
   try {
       if (!req.tokenIsValid) { 
@@ -128,19 +148,6 @@ router.get("/:id", async (req, res, next) => {
         next(e);
     }
 });
-
-// router.put("/:id", async (req, res, next) => {
-//     try {
-//         const updatedOrder = await ordersDAO.updateById(req.body);
-//         if(!updatedOrder) {
-//             throw new Error('Could not update order');
-//         } else {
-//             res.json(updatedOrder);
-//         }
-//     } catch(e) {
-//         next(e);
-//     }
-// });
 
 router.use(errorReport);
 

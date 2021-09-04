@@ -10,6 +10,5 @@ const productSchema = new mongoose.Schema({
 });
 
 productSchema.index({title: 'text', category: 'text'});
-// productSchema.index({price: 'number'});
 
 module.exports = mongoose.model('products', productSchema);

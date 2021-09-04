@@ -57,20 +57,6 @@ router.get('/', async (req, res, next) => {
   }
 });
 
-///CREATE PRODUCT///
-router.post('/', async (req, res, next) => {
-  try{
-    const reqProduct = req.body;
-    const product = await productDAO.createProduct(reqProduct);
-    if(product) {
-      res.json(product);
-    }
-  } catch(e) {
-    next(e)
-  }
-
-})
-
 //UPDATE PRODUCT// 
 router.put('/:id', async (req, res, next) => {
   try {

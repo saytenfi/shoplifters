@@ -31,7 +31,7 @@ module.exports.userExist = async (req, res, next) => {
       user.expireToken = Date.now() + 3600000;
       user.save().then((result) => {
         sendMail(user.email, token);
-        res.status(200).render('index', { message: {hdr: "Email Sent.", msg: "Please check your email." }});
+        // res.status(200).render('index', { message: {hdr: "Email Sent.", msg: "Please check your email." }});
       });
     });
   });
@@ -62,6 +62,7 @@ module.exports.newPassword = async (req, res, next) => {
           });
         })
         .catch((err) => {
+          res.status(500).json({error: err})
           console.log(err);
         });
     });
@@ -98,5 +99,6 @@ async function sendMail(email, token) {
       return console.log(error);
     }
     console.log("Message sent: %s", info.messageId);
+    res.status(200).render('index', { message: {hdr: "Email Sent.", msg: "Please check your email." }});
   });
 }

@@ -24,20 +24,6 @@ const isAuthenticated = async (req, res, next) => {
     }
 };
 
-const isAdmin = async (req, res, next) => {
-    try {
-        const user = req.user;
-        if(user.role === 'admin') {
-            next();
-        } else {
-            throw new Error('Access Denied');
-        }
-    } catch(e) {
-        next(e);
-    }
-}
-
 module.exports = {
-    isAuthenticated,
-    isAdmin
+    isAuthenticated
 };

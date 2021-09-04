@@ -47,12 +47,17 @@
 
         <!-- !PAGE CONTENT! -->
         <div class="deck-container">
+            <form class="form-inline my-2 my-lg-0" action="/admin/products/new">
+                <input type="submit" class="btn btn-outline-success my-2 my-sm-0" value="Create New Product" />
+            </form>
             <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
                 <div class="card-group">
                 {{#products}}
                     <div class="col mb-4" key={{_id}}>
                         <div class="card">
-                            <img class="card-img-top" src={{image}}>
+                            <div class="card-header">
+                                <img class="card-img-top" src={{image}}>
+                            </div>
                             <div class="card-body">
                                 <form class="form-inline my-2 my-lg-0" action="/admin/products/update" method="post">
                                     <div class="input">
@@ -111,6 +116,8 @@
                                     </div>
                                     <input type="submit" class="btn btn-outline-success my-2 my-sm-0" value="Update Product" />
                                 </form>
+                            </div>
+                            <div class="card-footer">
                                 <form class="form-inline my-2 my-lg-0" action="/admin/products/delete" method="post">
                                     <div class="input">
                                         <input
@@ -122,8 +129,8 @@
                                         />
                                     </div>
                                     <input type="submit" class="btn btn-outline-danger my-2 my-sm-0" value="Delete Product" />
-                                </form>
-                            </div>
+                                </form>                                
+                            </div>                            
                         </div>                
                     </div>
                 {{/products}}

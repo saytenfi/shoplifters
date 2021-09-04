@@ -3,7 +3,8 @@ const router = Router();
 bodyParser = require('body-parser');
 cookieParser = require('cookie-parser');
 
-const auth = require('../middleware/auth');
+const authenticate = require('../middleware/auth');
+const authorize = require('../middleware/isAdmin');
 const errorHandler = require('../middleware/ErrorReport');
 
 router.use(bodyParser.urlencoded({
@@ -43,7 +44,7 @@ router.use('/', (req, res, next) => {
   }
 });
 
-router.use(auth.isAuthenticated);
+router.use(authenticate.isAuthenticated);
 
 router.get('/home', (req,res,next) => {
   if(req.user.role === 'admin') {
@@ -58,6 +59,7 @@ router.use('/products', require('./product'));
 router.use('/orderCreate', require('./orderCreate'));
 router.use('/signout',require('./signout'));
 
+router.use(authorize.isAdmin);
 router.use('/admin', require('./admin'));
 
 router.use(errorHandler);

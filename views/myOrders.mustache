@@ -51,8 +51,13 @@
                 {{#orders}}
                     <div class="col mb-4" key={{_id}}>
                         <div class="card" style="18rem;">
-                            <div class="card-body">
+                            <div class="card-header">
                                 <h5 class="card-title">Order #: {{_id}}</h5>
+                                {{#isCanceled}}
+                                    <p>Order Canceled</p>
+                                {{/isCanceled}}
+                            </div>
+                            <div class="card-body">
                                 {{#products}}
                                     <p class="card-text">{{_id}}</p>
                                 {{/products}}
@@ -61,6 +66,10 @@
                                     {{#isActive}}
                                         <form class="form-inline my-2 my-lg-0" action="/orderCreate/checkout" method="post">
                                             <input class="form-control mr-sm-2" type="submit" value="Checkout">
+                                            <input class="form-control mr-sm-2" name="order" value="{{_id}}" type="hidden">    
+                                        </form>
+                                        <form class="form-inline my-2 my-lg-0" action="/orderCreate/cancel" method="post">
+                                            <input class="form-control btn btn-outline-danger my-2 my-sm-0" type="submit" value="Cancel Order">
                                             <input class="form-control mr-sm-2" name="order" value="{{_id}}" type="hidden">    
                                         </form>
                                     {{/isActive}}
@@ -72,6 +81,5 @@
                 </div>
             </div>        
         </div>
-
     </body>
 </html>

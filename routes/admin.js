@@ -92,6 +92,31 @@ router.get('/users/search', async(req,res,next) => {
     }
 });
 
+////////////////////
+// CREATE PRODUCT //
+router.get('/products/new', async (req, res, next) => {
+    try{
+        const product = await productDAO.getMaxProductId();
+        if(product) {
+            res.render('adminNewProduct',{maxId: product+1});
+        }
+    } catch(e) {
+        next(e);
+    }
+});
+
+router.post('/products/new', async (req, res, next) => {
+    try{
+      const reqProduct = req.body;
+      const product = await productDAO.createProduct(reqProduct);
+      if(product) {
+        res.status(200).redirect('/admin/products');
+      }
+    } catch(e) {
+      next(e);
+    }
+});
+
 ////////////////////////////
 // UPDATE & DELETE ROUTES //
 ////////////////////////////
