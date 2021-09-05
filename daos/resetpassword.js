@@ -31,7 +31,7 @@ module.exports.userExist = async (req, res, next) => {
       user.expireToken = Date.now() + 3600000;
       user.save().then((result) => {
         sendMail(user.email, token);
-        // res.status(200).render('index', { message: {hdr: "Email Sent.", msg: "Please check your email." }});
+        res.status(200).render('index', { message: {hdr: "Email Sent.", msg: "Please check your email." }});
       });
     });
   });
@@ -83,7 +83,7 @@ async function sendMail(email, token) {
   });
 
   
-  const urlLink = "http://localhost:5000/verifypassword/" + token;
+  const urlLink = "https://fierce-headland-03799.herokuapp.com/verifypassword/" + token;
   var mailOptions = {
     from: "endb179@gmail.com",
     to: email,
@@ -99,6 +99,5 @@ async function sendMail(email, token) {
       return console.log(error);
     }
     console.log("Message sent: %s", info.messageId);
-    res.status(200).render('index', { message: {hdr: "Email Sent.", msg: "Please check your email." }});
   });
 }
